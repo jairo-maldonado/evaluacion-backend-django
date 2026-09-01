@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Venta</title>
+</head>
+<body>
+    <h1>Registrar Venta</h1>
+
+    {% if messages %}
+        <ul style="color: red;">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        
+        <label>RUT del Cliente:</label><br>
+        <input type="text" name="rut" required><br><br>
+
+        <label>
+            <input type="checkbox" name="es_habitual"> ¿Es cliente habitual?
+        </label><br><br>
+
+        <label>Nombre (Opcional si no es habitual):</label><br>
+        <input type="text" name="nombre"><br><br>
+
+        <label>Producto a vender:</label><br>
+        <select name="producto_id" required>
+            <option value="">Seleccione un producto</option>
+            {% for producto in productos %}
+                <option value="{{ producto.id }}">{{ producto.nombre }} - Stock: {{ producto.stock }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label>Cantidad:</label><br>
+        <input type="number" name="cantidad" min="1" required><br><br>
+
+        <button type="submit">Confirmar Venta</button>
+    </form>
+
+    <br>
+    <a href="{% url 'listado_productos' %}">Volver al listado</a>
+</body>
+</html>
